@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ using TodoApi.Models.DTOs;
 
 namespace TodoApi.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class TodoController : BaseController
     {
         private readonly UserManager<AppUser> userManager;
@@ -22,6 +23,11 @@ namespace TodoApi.Controllers
             this.userManager = userManager;
         }
         [HttpGet]
+        /*
+         * SELECT [t].[Id], [t].[AppUserId], [t].[Description], [t].[DueDate], [t].[IsComplete], [t].[TaskName], [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]
+           FROM [Tasks] AS [t]
+           INNER JOIN [AspNetUsers] AS [a] ON [t].[AppUserId] = [a].[Id]
+         */
         public IActionResult Get(){
             var todos = _appDbContext.TodoTasks.Include(user=>user.AppUser)
                 .ToList();
@@ -35,7 +41,10 @@ namespace TodoApi.Controllers
             if(id == null)
                 return BadRequest("The 'id' value is Required");
             
-            TodoTask todo = await _appDbContext.TodoTasks.FindAsync(id);
+            
+
+            TodoTask todo = await _appDbContext.TodoTasks.Include(user => user.AppUser)
+                .FirstOrDefaultAsync(s => s.Id == id);
 
             if(todo == null)
                return NotFound();

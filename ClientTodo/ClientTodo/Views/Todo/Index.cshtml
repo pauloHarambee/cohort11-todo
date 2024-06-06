@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Todo";
+}
+@model IEnumerable<TodoTask>
+
+@if(ViewBag.Message != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @ViewBag.Message
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+<h3>Todo List</h3>
+
+<a asp-action="Create" asp-controller="Todo" class="btn btn-primary">Create New</a>
+
+<table class="table table-striped">
+
+    <thead>
+        <tr>
+            <th scope="col">Task Name</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Is Complete</th>
+            <th scope="col">Username</th>
+        </tr>
+
+    </thead>
+    <tbody>
+   
+
+            @foreach(var todo in Model)
+            {
+            <tr>
+                <td>
+                    @todo.TaskName
+                </td>
+                <td>
+                    @todo.DueDate
+                </td>
+                <td>
+                    @todo.IsComplete
+                </td>
+                <td>
+                    @todo.AppUser.UserName
+                </td>
+                <td>
+                    <a asp-action="Details" asp-controller="Todo" asp-route-id="@todo.Id">Details</a> | <a>Edit</a> | <a>Delete</a>
+                </td>
+            </tr>
+            }
+
+    </tbody>
+
+
+</table>
+
