@@ -10,7 +10,14 @@ namespace TodoApi.Controllers
         public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
             RoleManager<IdentityRole> roleManager) : base(userManager, signInManager, roleManager) { }
 
+        [HttpGet, Route("login")]
+        public ActionResult GetLoggedUser()
+        {
+            return Ok(_userManager.Users.FirstOrDefault(s=>s.UserName == User.Identity.Name));
+        }
+
         [HttpPost, Route("login")]
+      
         public async Task<ActionResult> Login(LoginDTO login)
         {
             if(!ModelState.IsValid)

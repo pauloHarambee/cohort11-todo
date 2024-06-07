@@ -46,6 +46,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 Seed.EnsureIdentity(app);
-//Seed.Populate(app);
+Seed.Populate(app);
 
 app.Run();

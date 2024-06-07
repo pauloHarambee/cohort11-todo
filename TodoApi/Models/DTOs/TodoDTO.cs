@@ -16,6 +16,8 @@ namespace TodoApi.Models.DTOs
         public bool IsComplete{get;set;}
         [Required]
         public string AppUserId { get; set;}
+        [Required]
+        public int TaskTypeId { get; set;}
 #nullable enable
         public string? Description{get;set;}
 

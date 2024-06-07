@@ -15,5 +15,7 @@ namespace TodoApi.Data
 
         }
         public DbSet<TodoTask> TodoTasks{get;set;}
+        public DbSet<TaskType> Types{get;set;}
     }
+
 }

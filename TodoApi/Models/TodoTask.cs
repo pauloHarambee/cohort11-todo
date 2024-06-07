@@ -23,5 +23,6 @@ namespace TodoApi.Models
 #nullable disable
         [Required]
         public AppUser AppUser { get;set;}
+        public TaskType Type { get; set;}
     }
 }

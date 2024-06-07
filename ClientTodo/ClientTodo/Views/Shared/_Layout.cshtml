@@ -23,6 +23,23 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Todo" asp-action="Index">Home</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav flex-grow-1 nav-right">
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                Welcome, @User.Identity.Name
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Todo" asp-action="Index">Todo</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>

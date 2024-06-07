@@ -30,6 +30,7 @@ namespace TodoApi.Controllers
          */
         public IActionResult Get(){
             var todos = _appDbContext.TodoTasks.Include(user=>user.AppUser)
+                .Include(type=>type.Type)
                 .ToList();
             if(todos.Count() == 0)
                 return BadRequest("No Records found!");
@@ -44,6 +45,7 @@ namespace TodoApi.Controllers
             
 
             TodoTask todo = await _appDbContext.TodoTasks.Include(user => user.AppUser)
+                .Include(s=>s.Type)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if(todo == null)
@@ -60,8 +62,11 @@ namespace TodoApi.Controllers
             if (user == null)
                 return BadRequest(new { todoTask, errorMsg = $"User with Id; {todoTask.AppUserId} does not exist"});
 
+            var type = _appDbContext.Types.Find(todoTask.TaskTypeId);
+
             var task = todoTask.ToTodoTask();
             task.AppUser = user;
+            task.Type = type;
 
              await _appDbContext.TodoTasks.AddAsync(task);
              if(await _appDbContext.SaveChangesAsync() > 0)
@@ -80,13 +85,17 @@ namespace TodoApi.Controllers
 
             var todo = await _appDbContext.TodoTasks.FindAsync(id);
 
-             if(todo == null)
+            var type = _appDbContext.Types.Find(todoDTO.TaskTypeId);
+
+
+            if (todo == null)
                return BadRequest($"The provide id {id} does not match any record");
             
             todo.TaskName = todoDTO.TaskName;
             todo.Description = todoDTO.Description;
             todo.DueDate = todoDTO.DueDate;
             todo.IsComplete = todoDTO.IsComplete;
+            todo.Type = type;
 
             _appDbContext.Update(todo);
             if(await _appDbContext.SaveChangesAsync() > 0)

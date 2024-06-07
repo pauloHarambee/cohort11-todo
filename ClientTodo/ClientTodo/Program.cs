@@ -9,6 +9,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<Options>(builder.Configuration.Get<Options>());
 builder.Services.AddSingleton<HttpClient>(new HttpClient());
 
+builder.Services.AddAuthentication().AddCookie("Cookie");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,6 +30,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Todo}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

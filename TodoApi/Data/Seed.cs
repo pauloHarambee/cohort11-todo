@@ -35,21 +35,22 @@ namespace TodoApi.Data
                 }
             }
         }
-        //public async static void Populate(WebApplication app)
-        //{
-        //    var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+        public async static void Populate(WebApplication app)
+        {
+            var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
 
-        //    using (var scope = scopeFactory.CreateScope())
-        //    {
-        //        var _appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var _appDbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        //        if(! await _appDbContext.TodoTasks.AnyAsync())
-        //        {
-        //            _appDbContext.TodoTasks.AddRange(new List<TodoTask>() { 
-        //                new TodoTask() { TaskName = "Name 1", DueDate = DateTime.Now, AppUser = null, IsComplete = false },
-        //            });
-        //        }
-        //    }
-        //    }
+                if (!await _appDbContext.Types.AnyAsync())
+                {
+                    _appDbContext.Types.AddRange(new List<TaskType>() {
+                        new TaskType() {Name = "Work" },new TaskType() {Name = "Household" },new TaskType() {Name = "Personal" }
+                    });
+                }
+                _appDbContext.SaveChanges();
+            }
+        }
     }
 }
